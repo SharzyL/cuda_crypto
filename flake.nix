@@ -17,14 +17,13 @@
             ];
             config.allowUnfree = true;
           };
-
-          cudaPackages = pkgs.cudaPackages_12_8;
+          cudaPackages = pkgs.myCudaPackages;
         in
         rec {
           legacyPackages = pkgs;
 
           # only gcc stdenv is supported, clangStdenv produces linker error
-          defaultPackage = pkgs.gcc14Stdenv.mkDerivation {
+          defaultPackage = pkgs.cudaStdenv.mkDerivation {
             name = "cuda_ground";
 
             nativeBuildInputs = with pkgs; [ cmake ninja ];
@@ -59,9 +58,23 @@
               export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/run/opengl-driver/lib:${pkgs.xorg.libXtst}/lib:${pkgs.systemd}/lib"
             '';
           });
+
+          devShells.fhs = defaultPackage.overrideAttrs (oldAttrs: {
+            # https://github.com/NixOS/nixpkgs/issues/214945
+            nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ (with pkgs; [
+              clang-tools
+            ]);
+
+            shellHook = ''
+              export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -fdiagnostics-color=always"
+              export NIX_LDFLAGS="$NIX_LDFLAGS -L /usr/lib/x86_64-linux-gnu -rpath /usr/local/cuda-12.2/targets/x86_64-linux/lib"
+            '';
+          });
+
         }
       )
     // {
       inherit inputs; # for easier introspection via nix repl
     };
 }
+

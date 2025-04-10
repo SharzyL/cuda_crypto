@@ -16,9 +16,6 @@ function(add_cuda_executable name)
     target_compile_options(${name} PUBLIC "--extended-lambda")
 endfunction()
 
-add_cuda_executable(bench src/bench.cu src/mmm.cu)
-target_link_libraries(bench nvbench::main)
-
-add_cuda_executable(example src/example.cu src/mmm.cu)
-
-install(TARGETS bench example)
+add_subdirectory(mmm)
+add_subdirectory(ntt)
+add_subdirectory(utils)
