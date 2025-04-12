@@ -1,5 +1,5 @@
 {
-  description = "cuda playground";
+  description = "cuda for crypto";
 
   inputs = {
     nixpkgs.url = "nixpkgs";
@@ -24,7 +24,7 @@
 
           # only gcc stdenv is supported, clangStdenv produces linker error
           defaultPackage = pkgs.cudaStdenv.mkDerivation {
-            name = "cuda_ground";
+            name = "cuda_crypto";
 
             nativeBuildInputs = with pkgs; [ cmake ninja ];
             buildInputs = with pkgs; [

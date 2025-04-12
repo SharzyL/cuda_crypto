@@ -49,4 +49,4 @@ void mmm_benchmark(nvbench::state &state) {
 NVBENCH_BENCH(mmm_benchmark)
 .set_name("ntt")
 .set_timeout(3)
-.add_int64_axis("N", {512, 1024, 2048, 4096});
+.add_int64_axis("N", {256, 512, 1024, 2048, 4096});

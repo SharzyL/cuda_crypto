@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
 
-project(cuda_ground LANGUAGES CUDA CXX)
+project(cuda_crypto LANGUAGES CUDA CXX)
 
 find_package(CUDAToolkit REQUIRED)
 find_package(nvbench REQUIRED)
